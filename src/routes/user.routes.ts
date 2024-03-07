@@ -6,7 +6,7 @@ const userRouter = Router();
 const userController = new UserController();
 
 // Create user route
-userRouter.post('/',authenticateToken, userController.createUser);
+userRouter.post('/', userController.createUser);
 
 // Get user by ID route
 userRouter.get('/:id',authenticateToken, userController.getUser);

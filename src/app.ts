@@ -6,6 +6,8 @@ import userRouter from './routes/user.routes';
 import speakerRouter from './routes/speaker.routes';
 import sessionRouter from './routes/session.routes';
 import authRouter from './routes/auth.routes';
+import { requestLogger } from './middlewares/logger.middleware';
+import otpRouter from './routes/otp.routes';
 const app = express();
 //db connection
 DataSourceConfig.initialize()
@@ -57,13 +59,12 @@ app.use((req, res, next) => {
 });
 
 // Logging middleware
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    next();
-});
+app.use(requestLogger);
 app.use(express.json());
+//routes
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/speakers', speakerRouter);
 app.use('/api/v1/session', sessionRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/verify/email',otpRouter);
 export default app;

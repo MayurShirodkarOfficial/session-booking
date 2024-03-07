@@ -1,5 +1,3 @@
-// src/index.js
-import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import app from './app';
 dotenv.config();

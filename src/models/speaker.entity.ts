@@ -28,12 +28,16 @@ export class Speaker {
   @OneToMany(() => Session, session => session.speaker)
   sessions: Session[] | undefined;
 
-  constructor(firstName: string, lastName: string, email: string, password: string, expertise: string, pricePerSession: number) {
+  @Column({ default: false })
+  isVerified: boolean;
+
+  constructor(firstName: string, lastName: string, email: string, password: string, expertise: string, pricePerSession: number,isVerified:boolean) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
     this.password = password;
     this.expertise = expertise;
     this.pricePerSession = pricePerSession;
+    this.isVerified = isVerified;
   }
 }
