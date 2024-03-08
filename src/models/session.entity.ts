@@ -27,7 +27,7 @@ export class Session {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   startTime: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP + INTERVAL 1 HOUR' })
   endTime: Date;
 
   @Column({

@@ -13,3 +13,5 @@
 2024-03-08T08:31:02.932Z - POST /api/v1/session - ::1
 2024-03-08T08:32:10.417Z - POST /api/v1/session - ::1
 2024-03-08T08:32:49.578Z - POST /api/v1/session - ::1
+2024-03-08T12:32:34.043Z - POST /api/v1/session - ::1
+2024-03-08T12:35:05.928Z - GET /api-docs/ - ::1

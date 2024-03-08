@@ -27,6 +27,10 @@ export class SessionController {
       if (existingSessionOnTimeSlot) {
         return res.status(409).json({ message: 'Session already Booked' });
       }
+      if(startTime < new Date()){
+        return res.status(409).json({ message: 'Date is not correct' });
+      }
+  
       else {
         const session: Session = new Session(user, speaker, startTime, endTime, timeSlot);
         const newSession = sessionRepository.create(session);
