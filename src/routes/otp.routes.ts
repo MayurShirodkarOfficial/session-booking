@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { OtpController } from '../controllers/otp.controller';
+import { authenticateToken } from '../middlewares/auth.middleware';
 const otpRouter = Router();
 const otpController = new OtpController;
 //verify otp
@@ -31,6 +32,6 @@ const otpController = new OtpController;
  *       '401':
  *         description: Unauthorized. Verification failed.
  */
-otpRouter.post('/', otpController.verifyEmailWithOTP);
+otpRouter.post('/',authenticateToken,otpController.verifyEmailWithOTP);
 
 export default otpRouter;
