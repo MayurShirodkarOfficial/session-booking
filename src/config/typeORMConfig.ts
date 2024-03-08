@@ -12,5 +12,5 @@ export const DataSourceConfig:DataSource = new DataSource({
     database: DB_DATABASE,
     entities: ["src/models/*.ts"],
     logging: true,
-    synchronize: false
+    synchronize: true
 })

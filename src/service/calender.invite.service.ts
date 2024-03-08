@@ -1,6 +1,6 @@
 const generateICSFileContent = (sessionDetails:any) =>{
-    const eventStart = new Date(sessionDetails.startTime).toISOString().replace(/-/g, '').replace(/:/g, '').slice(0, -5);
-    const eventEnd = new Date(sessionDetails.endTime).toISOString().replace(/-/g, '').replace(/:/g, '').slice(0, -5);
+    const eventStart = new Date(sessionDetails.startTime);
+    const eventEnd = new Date(sessionDetails.endTime);
     const icsContent = `
       BEGIN:VCALENDAR
       VERSION:2.0
@@ -8,10 +8,10 @@ const generateICSFileContent = (sessionDetails:any) =>{
       DTSTART:${eventStart}
       DTEND:${eventEnd}
       SUMMARY:${sessionDetails.summary || 'Session with Speaker'}
-      DESCRIPTION:${sessionDetails.description || 'Description of the session'}
+      DESCRIPTION:${sessionDetails.description || 'Your Session is scheduled , you need to attend at allotted slot'}
       END:VEVENT
       END:VCALENDAR
     `;
     return icsContent;
   }
-  
+  export {generateICSFileContent};

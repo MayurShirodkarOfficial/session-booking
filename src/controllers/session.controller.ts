@@ -4,6 +4,8 @@ import { Session } from '../models/session.entity';
 import { Repository } from 'typeorm';
 import { User } from '../models/user.entity';
 import { Speaker } from '../models/speaker.entity';
+import { sendSessionNotifierEmail } from '../service/session.email.service';
+import { SessionResponse } from '../dto/session.dto';
 
 export class SessionController {
   async createSession(req: Request, res: Response) {
@@ -29,7 +31,15 @@ export class SessionController {
         const session: Session = new Session(user, speaker, startTime, endTime, timeSlot);
         const newSession = sessionRepository.create(session);
         await sessionRepository.save(newSession);
-        return res.status(201).json(newSession);
+        const sessionDetails = {
+          sessionId : newSession.id,
+          startTime:newSession.startTime,
+          endTime:newSession.endTime,
+          speaker:speaker.firstName +''+ speaker.lastName
+        }
+        sendSessionNotifierEmail(user.email,sessionDetails);
+        sendSessionNotifierEmail(speaker.email,sessionDetails);
+        return res.status(201).json(new SessionResponse(speaker?.firstName +' '+speaker?.lastName,newSession.startTime,newSession.endTime));
       }
 
     } catch (error) {
@@ -41,12 +51,15 @@ export class SessionController {
   async getSession(req: Request, res: Response) {
     try {
       const sessionId = parseInt(req.params.id);
+      const speakerId = parseInt(req.params.speakerId);
       const sessionRepository: Repository<Session> = DataSourceConfig.getRepository(Session);
+      const speakerRepository: Repository<Speaker> = DataSourceConfig.getRepository(Speaker);
       const session = await sessionRepository.findOne({ where: { id: sessionId } });
       if (!session) {
         return res.status(404).json({ error: 'Session not found' });
       }
-      return res.status(200).json(session);
+      const speaker: Speaker | null = await speakerRepository.findOne({ where: { id: speakerId } });
+      return res.status(200).json(new SessionResponse(speaker?.firstName +''+speaker?.lastName,session.startTime,session.endTime));
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal Server Error' });

@@ -3,6 +3,9 @@ import { DataSourceConfig } from '../config/typeORMConfig';
 import { Repository } from 'typeorm';
 import { User } from '../models/user.entity';
 import bcrypt from 'bcrypt';
+import { sendEmailVerificationOTP } from '../service/otp.email.service';
+import { generateOTP, storeOtp } from '../service/otp.service';
+import { UserResponse } from '../dto/user.dto';
 export class UserController {
   async createUser(req: Request, res: Response) {
     try {
@@ -15,7 +18,12 @@ export class UserController {
       const passwordHash = await bcrypt.hash(password, 10);
       const newUser = userRepository.create({ firstName, lastName, email, password: passwordHash });
       await userRepository.save(newUser);
-      return res.status(201).json(newUser);
+      const otp = generateOTP()
+      const currentTime = new Date();
+      const tenMinutesLater = new Date(currentTime.getTime() + 10 * 60 * 1000)
+      storeOtp(email,otp,tenMinutesLater);
+      sendEmailVerificationOTP(email,otp);
+      return res.status(201).json(new UserResponse(newUser.firstName,newUser.lastName,newUser.email,"user"));
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal Server Error' });
@@ -30,7 +38,7 @@ export class UserController {
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
-      return res.status(200).json(user);
+      return res.status(201).json(new UserResponse(user.firstName,user.lastName,user.email,"user"));
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal Server Error' });

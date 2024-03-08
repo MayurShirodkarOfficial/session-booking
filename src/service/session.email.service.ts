@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer'
+import {generateICSFileContent} from './calender.invite.service'
 // Send OTP via email
 const sendSessionNotifierEmail = async (email: string,sessionDetails:any) => {
   // Create SMTP transport

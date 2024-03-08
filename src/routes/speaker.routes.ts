@@ -5,7 +5,7 @@ const speakerRouter = Router();
 const speakerController = new SpeakerController();
 
 // Create user route
-speakerRouter.post('/', authenticateToken,speakerController.createSpeaker);
+speakerRouter.post('/',speakerController.createSpeaker);
 
 // Get user by ID route
 speakerRouter.get('/:id',authenticateToken, speakerController.getSpeaker);

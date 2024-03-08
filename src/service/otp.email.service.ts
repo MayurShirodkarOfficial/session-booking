@@ -19,6 +19,6 @@ const sendEmailVerificationOTP = async (email: string, otp: string) => {
   };
 
   // Send email
-  await transporter.sendMail(mailOptions);
+  return await transporter.sendMail(mailOptions);
 };
 export {sendEmailVerificationOTP};
